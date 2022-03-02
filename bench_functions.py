@@ -6,17 +6,12 @@ def func_with_named_args(a, b, c):
 
 def keyword_call():
     func_with_kwargs(a=1, b=2, c=3)
-    func_with_kwargs(a=1, b=2, c=3)
-    func_with_kwargs(a=1, b=2, c=3)
-    func_with_kwargs(a=1, b=2, c=3)
-    func_with_kwargs(a=1, b=2, c=3)
+
 
 def positional_call():
+    numbers = (1, 2, 3)
     func_with_named_args(a=1, b=2, c=3)
-    func_with_named_args(a=1, b=2, c=3)
-    func_with_named_args(a=1, b=2, c=3)
-    func_with_named_args(a=1, b=2, c=3)
-    func_with_named_args(a=1, b=2, c=3)
+
 
 
 def tiny_func(x, y):
