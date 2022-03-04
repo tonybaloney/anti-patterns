@@ -8,7 +8,6 @@ from statistics import fmean
 from rich.console import Console
 from rich.table import Table
 from rich.text import Text
-import cProfile
 
 REPEAT = 5
 TIMES = 5
@@ -39,9 +38,8 @@ if __name__ == "__main__":
             for benchmark in i.__benchmarks__:
                 n += 1
                 func1, func2, desc = benchmark
-                with cProfile.Profile() as pr:
-                    without_result = timeit.repeat(func1, repeat=REPEAT, number=TIMES)
-                    with_result = timeit.repeat(func2, repeat=REPEAT, number=TIMES)
+                without_result = timeit.repeat(func1, repeat=REPEAT, number=TIMES)
+                with_result = timeit.repeat(func2, repeat=REPEAT, number=TIMES)
 
                 delta_mean = (abs(fmean(with_result) - fmean(without_result)) / fmean(without_result)) * 100.0
                 delta_min = (abs(min(with_result) - min(without_result)) / min(without_result)) * 100.0
