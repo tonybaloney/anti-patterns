@@ -9,31 +9,26 @@ def keyword_call():
 
 
 def positional_call():
-    numbers = (1, 2, 3)
     func_with_named_args(a=1, b=2, c=3)
 
 
 
-def tiny_func(x, y):
+def add(x, y):
     return x + y
 
 def use_tiny_func():
     x = 1
-    y = 2
-    tiny_func(x, y)
-    tiny_func(x, y)
-    tiny_func(x, y)
-    tiny_func(x, y)
-    tiny_func(x, y)
+    for n in range(100_000):
+        add(x, n)
+        add(n, x)
+
 
 def inline_tiny_func():
     x = 1
-    y = 2
-    x + y
-    x + y
-    x + y
-    x + y
-    x + y
+    for n in range(100_000):
+        x + n
+        n + x
+
 
 
 __benchmarks__ = [ 
