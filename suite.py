@@ -12,15 +12,28 @@ from rich.text import Text
 REPEAT = 5
 TIMES = 5
 
+def format_delta(a: float, b: float, d: float) -> Text:
+    if a < b:
+        if d < 10:
+            col = "medium_spring_green"
+        elif 10 <= d < 20:  
+            col = "spring_green1"
+        elif 20 <= d < 40:
+            col = "spring_green2"
+        else:
+            col = "green1"
+        return Text(f"{b:.3f} ({d:.1f}%)", style=col)
+    else:
+        return Text(f"{b:.3f} (-{d:.1f}%)", style="red")
+
+
 if __name__ == "__main__":
     table = Table(title=f"Anti-Pattern Benchmark Suite, repeat={REPEAT}, number={TIMES}")
 
-    table.add_column("Pattern", justify="right", style="cyan", no_wrap=True)
     table.add_column("Benchmark", justify="right", style="cyan", no_wrap=True)
-    table.add_column("Repeat", style="magenta")
-    table.add_column("Min", style="magenta", width=7)
-    table.add_column("Max", style="magenta", width=7)
-    table.add_column("Mean", style="magenta", width=7)
+    table.add_column("Min", width=7)
+    table.add_column("Max", width=7)
+    table.add_column("Mean", width=7)
     table.add_column("Min (+)", style="blue", width=15)
     table.add_column("Max (+)", style="blue", width=15)
     table.add_column("Mean (+)", style="blue", width=15)
@@ -45,24 +58,12 @@ if __name__ == "__main__":
                 delta_min = (abs(min(with_result) - min(without_result)) / min(without_result)) * 100.0
                 delta_max = (abs(max(with_result) - max(without_result)) / max(without_result)) * 100.0
 
-                if min(with_result) < min(without_result):
-                    fdelta_min = Text(f"{min(with_result):.3f} ({delta_min:.1f}%)", style="green")
-                else:
-                    fdelta_min = Text(f"{min(with_result):.3f} (-{delta_min:.1f}%)", style="red")
+                fdelta_min = format_delta(min(with_result), min(without_result), delta_min)
+                fdelta_max = format_delta(max(with_result), max(without_result), delta_max)
+                fdelta_mean = format_delta(fmean(with_result), fmean(without_result), delta_mean)
 
-                if max(with_result) < max(without_result):
-                    fdelta_max = Text(f"{max(with_result):.3f} ({delta_max:.1f}%)", style="green")
-                else:
-                    fdelta_max = Text(f"{max(with_result):.3f} (-{delta_max:.1f}%)", style="red")
-
-                if fmean(with_result) < fmean(without_result):
-                    fdelta_mean = Text(f"{fmean(with_result):.3f} ({delta_mean:.1f}%)", style="green")
-                else:
-                    fdelta_mean = Text(f"{fmean(with_result):.3f} (-{delta_mean:.1f}%)", style="red")
-
-                table.add_row(str(n),
+                table.add_row(
                               desc,
-                              str(TIMES * REPEAT),
                               "{:.3f}".format(min(without_result)),
                               "{:.3f}".format(max(without_result)),
                               "{:.3f}".format(fmean(without_result)),
