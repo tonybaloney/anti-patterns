@@ -101,9 +101,54 @@ def mapping_match_statement():
     assert valid_boats == 200_000
     assert problems == 200_000
 
+class Driver:
+    def __init__(self, name, team, **extra):
+        self.name = name
+        self.team = team
+        self.extra = extra
+
+def bench_class_matching_statement():
+    drivers = [
+        Driver(name="Max Verstappen", team="Red Bull", ),
+        Driver(name="Sergio Perez", team="Red Bull", ),
+        Driver(name="Charles Leclerc", team="Ferrari", ),
+        Driver(name="Lewis Hamilton", team="Mercedes", ),
+    ]
+
+    for _ in range(100_000):
+        for driver in drivers:
+            match driver:
+                case Driver(name="Max Verstappen"): desc = f"Max Verstappen, the current world #1"
+                case Driver(name=name, team="Ferrari"): desc = f"{name}, a Ferrari driver!! 🐎"
+                case Driver(name=name, team=team): desc = f"{name}, a {team} driver."
+                case _: desc = "Invalid request"
+            # print(desc)
+
+
+def bench_class_matching_logical():
+    drivers = [
+        Driver(name="Max Verstappen", team="Red Bull", ),
+        Driver(name="Sergio Perez", team="Red Bull", ),
+        Driver(name="Charles Leclerc", team="Ferrari", ),
+        Driver(name="Lewis Hamilton", team="Mercedes", ),
+    ]
+
+    for _ in range(100_000):
+        for driver in drivers:
+            if not isinstance(driver, Driver):
+                desc = "Invalid request"
+            elif driver.name == "Max Verstappen":
+                desc = f"Max Verstappen, the current world #1"
+            elif driver.team == "Ferrari": 
+                desc = f"{driver.name}, a Ferrari driver!! 🐎"
+            else:
+                desc = f"{driver.name}, a {driver.team} driver."
+            # print(desc)
+
 
 __benchmarks__ = [
     (sequence_match_logical, sequence_match_statement, "Match statements (sequence)"),
     (literal_match_logical, literal_match_statement, "Match statements (literal)"),
     (mapping_match_logical, mapping_match_statement, "Match statements (mapping)"),
+    (bench_class_matching_logical, bench_class_matching_statement, "Match statements (classes)"),
 ]
