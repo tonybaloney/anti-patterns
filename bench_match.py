@@ -6,9 +6,11 @@ def sequence_match_logical():
     seq = ["🐸", "🐛", "🦋", "🪲"]
     frogs = 0
     for _ in range(100_000):
-        if isinstance(seq, Sequence) and len(seq) > 0 and seq[0] == "🐸": 
-            frogs += 1
-    
+        try:
+            frogs += (seq[0] == "🐸")
+        except IndexError:
+            pass
+
     assert frogs == 100_000
 
 def sequence_match_statement():
