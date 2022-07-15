@@ -6,7 +6,7 @@ A repo to backup the assertions in my PyCon 2022 talk
 
 ```console
 $ pip install -r requirements.txt
-$ python suite.py
+$ richbench .
 ```
 
 ## Results
